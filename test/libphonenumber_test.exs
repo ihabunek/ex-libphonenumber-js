@@ -1,12 +1,14 @@
 defmodule ClusterTest do
   use ExUnit.Case
 
+  import Libphonenumber, only: [parse: 1, parse: 2]
+
   describe "parse" do
     test "parsing national numbers" do
       assert {:ok, _pid} = Libphonenumber.start_link(nil)
 
       # Valid number
-      assert {:ok, parsed} = Libphonenumber.parse("(484) 4608-058", "US")
+      assert {:ok, parsed} = parse("(484) 4608-058", "US")
 
       assert parsed == %Libphonenumber.Parsed{
                country: "US",
@@ -18,7 +20,7 @@ defmodule ClusterTest do
              }
 
       # Invalid number
-      assert {:ok, parsed} = Libphonenumber.parse("(555) 1234-567", "US")
+      assert {:ok, parsed} = parse("(555) 1234-567", "US")
 
       assert parsed == %Libphonenumber.Parsed{
                country: "US",
@@ -29,26 +31,26 @@ defmodule ClusterTest do
                valid?: false
              }
 
-      assert {:error, :invalid_country} = Libphonenumber.parse("(555) 1234-567", nil)
-      assert {:error, :invalid_country} = Libphonenumber.parse("(555) 1234-567", "")
-      assert {:error, :invalid_country} = Libphonenumber.parse("(555) 1234-567", "XX")
-      assert {:error, :too_short} = Libphonenumber.parse("555", "US")
-      assert {:error, :too_long} = Libphonenumber.parse("(555) 1234-567-890", "US")
-      assert {:error, :not_a_number} = Libphonenumber.parse("", "US")
-      assert {:error, :not_a_number} = Libphonenumber.parse("banana", "US")
-      assert {:error, :invalid_length} = Libphonenumber.parse("444 1 4444", "TR")
+      assert {:error, :invalid_country} = parse("(555) 1234-567", nil)
+      assert {:error, :invalid_country} = parse("(555) 1234-567", "")
+      assert {:error, :invalid_country} = parse("(555) 1234-567", "XX")
+      assert {:error, :too_short} = parse("555", "US")
+      assert {:error, :too_long} = parse("(555) 1234-567-890", "US")
+      assert {:error, :not_a_number} = parse("", "US")
+      assert {:error, :not_a_number} = parse("banana", "US")
+      assert {:error, :invalid_length} = parse("444 1 4444", "TR")
 
       # Currently giving a non-string number or country returns :unknown error
       # TODO: this could be improved by checking type in Elixir before calling node
-      assert {:error, :unknown} = Libphonenumber.parse(100, "US")
-      assert {:error, :unknown} = Libphonenumber.parse(true, "US")
-      assert {:error, :unknown} = Libphonenumber.parse("(555) 1234-567", 100)
-      assert {:error, :unknown} = Libphonenumber.parse("(555) 1234-567", true)
+      assert {:error, :unknown} = parse(100, "US")
+      assert {:error, :unknown} = parse(true, "US")
+      assert {:error, :unknown} = parse("(555) 1234-567", 100)
+      assert {:error, :unknown} = parse("(555) 1234-567", true)
     end
 
     test "parsing international numbers" do
       assert {:ok, _pid} = Libphonenumber.start_link(nil)
-      assert {:ok, parsed} = Libphonenumber.parse("+385991234567")
+      assert {:ok, parsed} = parse("+385991234567")
 
       assert parsed == %Libphonenumber.Parsed{
                country: "HR",
@@ -60,7 +62,7 @@ defmodule ClusterTest do
              }
 
       # Given country code is ignored
-      assert {:ok, parsed} = Libphonenumber.parse("+385991234567", "US")
+      assert {:ok, parsed} = parse("+385991234567", "US")
 
       assert parsed == %Libphonenumber.Parsed{
                country: "HR",
@@ -71,10 +73,10 @@ defmodule ClusterTest do
                valid?: true
              }
 
-      assert {:error, :too_short} = Libphonenumber.parse("+38599123")
-      assert {:error, :too_long} = Libphonenumber.parse("+38599123456789")
-      assert {:error, :not_a_number} = Libphonenumber.parse("+")
-      assert {:error, :invalid_country} = Libphonenumber.parse("+01234567")
+      assert {:error, :too_short} = parse("+38599123")
+      assert {:error, :too_long} = parse("+38599123456789")
+      assert {:error, :not_a_number} = parse("+")
+      assert {:error, :invalid_country} = parse("+01234567")
     end
   end
 end
