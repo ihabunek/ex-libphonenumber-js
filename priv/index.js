@@ -39,11 +39,8 @@ function parse(number = "", defaultCountry = "") {
   }
 }
 
-const ok_response = result =>
-  JSON.stringify([true, result]) + "\n"
-
-const error_response = (error = "UNKWNON") =>
-  JSON.stringify([false, error]) + "\n"
+const ok_response = result => JSON.stringify([true, result]) + "\n"
+const error_response = error => JSON.stringify([false, error]) + "\n"
 
 // Logging to stderr doesn't pipe the output back to elixir
 const log = string => process.stderr.write(string + "\n")

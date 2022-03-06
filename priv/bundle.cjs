@@ -5566,4 +5566,4 @@ function parse(number = "", defaultCountry = "") {
   }
 }
 var ok_response = (result) => JSON.stringify([true, result]) + "\n";
-var error_response = (error = "UNKWNON") => JSON.stringify([false, error]) + "\n";
+var error_response = (error) => JSON.stringify([false, error]) + "\n";
