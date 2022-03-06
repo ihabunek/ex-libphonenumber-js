@@ -58,7 +58,7 @@ defmodule Libphonenumber do
   def init(_) do
     node = System.find_executable("node") || raise "Node not found."
     bundle_path = Application.app_dir(:libphonenumber_js, "priv/bundle.cjs")
-    port = Port.open({:spawn_executable, node}, [:binary, args: [bundle_path]])
+    port = Port.open({:spawn_executable, node}, [:binary, :exit_status, args: [bundle_path]])
     {:ok, port}
   end
 
@@ -75,10 +75,19 @@ defmodule Libphonenumber do
           if success?,
             do: {:ok, to_parsed(result)},
             else: {:error, to_parse_error(result)}
+
+        {^port, {:exit_status, status}} ->
+          :erlang.error({:port_exit, status})
       end
 
     {:reply, result, port}
   end
+
+  @impl GenServer
+  def handle_info({port, {:exit_status, status}}, port),
+    do: :erlang.error({:port_exit, status})
+
+  def handle_info(_, port), do: {:noreply, port}
 
   defp to_parsed(result) do
     %Parsed{
