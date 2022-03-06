@@ -10,6 +10,8 @@ defmodule Libphonenumber do
           | :too_short
           | :unknown
 
+  @type format_error :: :invalid_format
+
   @type number_type ::
           :mobile
           | :fixed_line
@@ -23,6 +25,15 @@ defmodule Libphonenumber do
           | :uan
           | :voicemail
           | :unknown
+
+  @type format :: :national | :international | :e164 | :rfc3966
+
+  @formats %{
+    national: "NATIONAL",
+    international: "INTERNATIONAL",
+    e164: "E.164",
+    rfc3966: "RFC3966"
+  }
 
   defmodule Parsed do
     @type t :: %{
@@ -48,6 +59,11 @@ defmodule Libphonenumber do
   @spec parse(String.t(), String.t()) :: {:ok, Parsed.t()} | {:error, parse_error()}
   def parse(number, country \\ "") do
     GenServer.call(__MODULE__, {:parse, number, country})
+  end
+
+  @spec format(String.t(), format()) :: {:ok, String.t()} | {:error, format_error()}
+  def format(number, format \\ :national) do
+    GenServer.call(__MODULE__, {:format, number, format})
   end
 
   # ----------------------------------------------------------------------------
@@ -81,6 +97,31 @@ defmodule Libphonenumber do
       end
 
     {:reply, result, port}
+  end
+
+  @impl GenServer
+  def handle_call({:format, number, format}, _from, port) do
+    with {:ok, js_format} <- Map.fetch(@formats, format) do
+      payload = Jason.encode!(["format", number, js_format])
+      Port.command(port, "#{payload}\n")
+
+      result =
+        receive do
+          {^port, {:data, response}} ->
+            [success?, result] = Jason.decode!(response)
+
+            if success?,
+              do: {:ok, result},
+              else: {:error, to_parse_error(result)}
+
+          {^port, {:exit_status, status}} ->
+            :erlang.error({:port_exit, status})
+        end
+
+      {:reply, result, port}
+    else
+      _ -> {:reply, {:error, :invalid_format}, port}
+    end
   end
 
   @impl GenServer

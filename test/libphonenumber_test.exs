@@ -1,7 +1,7 @@
 defmodule ClusterTest do
   use ExUnit.Case
 
-  import Libphonenumber, only: [parse: 1, parse: 2]
+  import Libphonenumber, only: [parse: 1, parse: 2, format: 1, format: 2]
 
   describe "parse" do
     test "parsing national numbers" do
@@ -77,6 +77,32 @@ defmodule ClusterTest do
       assert {:error, :too_long} = parse("+38599123456789")
       assert {:error, :not_a_number} = parse("+")
       assert {:error, :invalid_country} = parse("+01234567")
+    end
+  end
+
+  describe "format" do
+    test "various formats" do
+      assert {:ok, _pid} = Libphonenumber.start_link(nil)
+
+      assert format("+385991234567") == {:ok, "099 123 4567"}
+      assert format("+385991234567", :national) == {:ok, "099 123 4567"}
+      assert format("+385991234567", :international) == {:ok, "+385 99 123 4567"}
+      assert format("+385991234567", :e164) == {:ok, "+385991234567"}
+      assert format("+385991234567", :rfc3966) == {:ok, "tel:+385991234567"}
+
+      assert format("+15551234567") == {:ok, "(555) 123-4567"}
+      assert format("+15551234567", :national) == {:ok, "(555) 123-4567"}
+      assert format("+15551234567", :international) == {:ok, "+1 555 123 4567"}
+      assert format("+15551234567", :e164) == {:ok, "+15551234567"}
+      assert format("+15551234567", :rfc3966) == {:ok, "tel:+15551234567"}
+
+      assert format("") == {:error, :not_a_number}
+      assert format("foo") == {:error, :not_a_number}
+      assert format("1234567890") == {:error, :invalid_country}
+      assert format("+12345") == {:error, :too_short}
+      assert format("+1234567890123") == {:error, :too_long}
+      assert format("+385991234567", :foo) == {:error, :invalid_format}
+      assert format("+385991234567", :foo) == {:error, :invalid_format}
     end
   end
 end

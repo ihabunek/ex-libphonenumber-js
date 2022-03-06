@@ -507,9 +507,9 @@ var require_metadata = __commonJS({
       return NumberingPlan2;
     }();
     var Format = /* @__PURE__ */ function() {
-      function Format2(format, metadata) {
+      function Format2(format2, metadata) {
         _classCallCheck(this, Format2);
-        this._format = format;
+        this._format = format2;
         this.metadata = metadata;
       }
       _createClass(Format2, [{
@@ -519,7 +519,7 @@ var require_metadata = __commonJS({
         }
       }, {
         key: "format",
-        value: function format() {
+        value: function format2() {
           return this._format[1];
         }
       }, {
@@ -1297,9 +1297,9 @@ var require_formatNationalNumberUsingFormat = __commonJS({
     }
     var FIRST_GROUP_PATTERN = /(\$\d)/;
     exports.FIRST_GROUP_PATTERN = FIRST_GROUP_PATTERN;
-    function formatNationalNumberUsingFormat(number, format, _ref) {
+    function formatNationalNumberUsingFormat(number, format2, _ref) {
       var useInternationalFormat = _ref.useInternationalFormat, withNationalPrefix = _ref.withNationalPrefix, carrierCode = _ref.carrierCode, metadata = _ref.metadata;
-      var formattedNumber = number.replace(new RegExp(format.pattern()), useInternationalFormat ? format.internationalFormat() : withNationalPrefix && format.nationalPrefixFormattingRule() ? format.format().replace(FIRST_GROUP_PATTERN, format.nationalPrefixFormattingRule()) : format.format());
+      var formattedNumber = number.replace(new RegExp(format2.pattern()), useInternationalFormat ? format2.internationalFormat() : withNationalPrefix && format2.nationalPrefixFormattingRule() ? format2.format().replace(FIRST_GROUP_PATTERN, format2.nationalPrefixFormattingRule()) : format2.format());
       if (useInternationalFormat) {
         return (0, _applyInternationalSeparatorStyle["default"])(formattedNumber);
       }
@@ -1399,7 +1399,7 @@ var require_format = __commonJS({
         return "".concat(formattedNumber).concat(metadata.ext()).concat(extension);
       }
     };
-    function formatNumber2(input, format, options, metadata) {
+    function formatNumber2(input, format2, options, metadata) {
       if (options) {
         options = _objectSpread({}, DEFAULT_OPTIONS, options);
       } else {
@@ -1418,7 +1418,7 @@ var require_format = __commonJS({
       var countryCallingCode = metadata.countryCallingCode();
       var nationalNumber = options.v2 ? input.nationalNumber : input.phone;
       var number;
-      switch (format) {
+      switch (format2) {
         case "NATIONAL":
           if (!nationalNumber) {
             return "";
@@ -1446,17 +1446,17 @@ var require_format = __commonJS({
           var formattedNumber = formatIDD(nationalNumber, input.carrierCode, countryCallingCode, options.fromCountry, metadata);
           return addExtension(formattedNumber, input.ext, metadata, options.formatExtension);
         default:
-          throw new Error('Unknown "format" argument passed to "formatNumber()": "'.concat(format, '"'));
+          throw new Error('Unknown "format" argument passed to "formatNumber()": "'.concat(format2, '"'));
       }
     }
     function formatNationalNumber(number, carrierCode, formatAs, metadata, options) {
-      var format = chooseFormatForNumber(metadata.formats(), number);
-      if (!format) {
+      var format2 = chooseFormatForNumber(metadata.formats(), number);
+      if (!format2) {
         return number;
       }
-      return (0, _formatNationalNumberUsingFormat["default"])(number, format, {
+      return (0, _formatNationalNumberUsingFormat["default"])(number, format2, {
         useInternationalFormat: formatAs === "INTERNATIONAL",
-        withNationalPrefix: format.nationalPrefixIsOptionalWhenFormattingInNationalFormat() && options && options.nationalPrefix === false ? false : true,
+        withNationalPrefix: format2.nationalPrefixIsOptionalWhenFormattingInNationalFormat() && options && options.nationalPrefix === false ? false : true,
         carrierCode,
         metadata
       });
@@ -1474,15 +1474,15 @@ var require_format = __commonJS({
             break;
           _ref = _i.value;
         }
-        var format = _ref;
-        if (format.leadingDigitsPatterns().length > 0) {
-          var lastLeadingDigitsPattern = format.leadingDigitsPatterns()[format.leadingDigitsPatterns().length - 1];
+        var format2 = _ref;
+        if (format2.leadingDigitsPatterns().length > 0) {
+          var lastLeadingDigitsPattern = format2.leadingDigitsPatterns()[format2.leadingDigitsPatterns().length - 1];
           if (nationalNnumber.search(lastLeadingDigitsPattern) !== 0) {
             continue;
           }
         }
-        if ((0, _matchesEntirely["default"])(nationalNnumber, format.pattern())) {
-          return format;
+        if ((0, _matchesEntirely["default"])(nationalNnumber, format2.pattern())) {
+          return format2;
         }
       }
     }
@@ -1569,9 +1569,9 @@ var require_PhoneNumber = __commonJS({
       return Constructor;
     }
     var USE_NON_GEOGRAPHIC_COUNTRY_CODE = false;
-    var PhoneNumber = /* @__PURE__ */ function() {
-      function PhoneNumber2(countryCallingCode, nationalNumber, metadata) {
-        _classCallCheck(this, PhoneNumber2);
+    var PhoneNumber2 = /* @__PURE__ */ function() {
+      function PhoneNumber3(countryCallingCode, nationalNumber, metadata) {
+        _classCallCheck(this, PhoneNumber3);
         if (!countryCallingCode) {
           throw new TypeError("`country` or `countryCallingCode` not passed");
         }
@@ -1598,7 +1598,7 @@ var require_PhoneNumber = __commonJS({
         this.number = "+" + this.countryCallingCode + this.nationalNumber;
         this.metadata = metadata;
       }
-      _createClass(PhoneNumber2, [{
+      _createClass(PhoneNumber3, [{
         key: "setExt",
         value: function setExt(ext) {
           this.ext = ext;
@@ -1637,7 +1637,7 @@ var require_PhoneNumber = __commonJS({
         }
       }, {
         key: "format",
-        value: function format(_format, options) {
+        value: function format2(_format, options) {
           return (0, _format_["default"])(this, _format, options ? _objectSpread({}, options, {
             v2: true
           }) : {
@@ -1660,9 +1660,9 @@ var require_PhoneNumber = __commonJS({
           return this.format("RFC3966", options);
         }
       }]);
-      return PhoneNumber2;
+      return PhoneNumber3;
     }();
-    exports["default"] = PhoneNumber;
+    exports["default"] = PhoneNumber2;
     var isCountryCode = function isCountryCode2(value) {
       return /^[A-Z]{2}$/.test(value);
     };
@@ -3819,11 +3819,11 @@ var require_AsYouTypeFormatter_complete = __commonJS({
     function _interopRequireDefault(obj) {
       return obj && obj.__esModule ? obj : { "default": obj };
     }
-    function formatCompleteNumber(state, format, _ref) {
+    function formatCompleteNumber(state, format2, _ref) {
       var metadata = _ref.metadata, shouldTryNationalPrefixFormattingRule = _ref.shouldTryNationalPrefixFormattingRule, getSeparatorAfterNationalPrefix = _ref.getSeparatorAfterNationalPrefix;
-      var matcher = new RegExp("^(?:".concat(format.pattern(), ")$"));
+      var matcher = new RegExp("^(?:".concat(format2.pattern(), ")$"));
       if (matcher.test(state.nationalSignificantNumber)) {
-        return formatNationalNumberWithAndWithoutNationalPrefixFormattingRule(state, format, {
+        return formatNationalNumberWithAndWithoutNationalPrefixFormattingRule(state, format2, {
           metadata,
           shouldTryNationalPrefixFormattingRule,
           getSeparatorAfterNationalPrefix
@@ -3833,11 +3833,11 @@ var require_AsYouTypeFormatter_complete = __commonJS({
     function canFormatCompleteNumber(nationalSignificantNumber, metadata) {
       return (0, _checkNumberLength["default"])(nationalSignificantNumber, metadata) === "IS_POSSIBLE";
     }
-    function formatNationalNumberWithAndWithoutNationalPrefixFormattingRule(state, format, _ref2) {
+    function formatNationalNumberWithAndWithoutNationalPrefixFormattingRule(state, format2, _ref2) {
       var metadata = _ref2.metadata, shouldTryNationalPrefixFormattingRule = _ref2.shouldTryNationalPrefixFormattingRule, getSeparatorAfterNationalPrefix = _ref2.getSeparatorAfterNationalPrefix;
       var nationalSignificantNumber = state.nationalSignificantNumber, international = state.international, nationalPrefix = state.nationalPrefix, carrierCode = state.carrierCode;
-      if (shouldTryNationalPrefixFormattingRule(format)) {
-        var formattedNumber = formatNationalNumber(state, format, {
+      if (shouldTryNationalPrefixFormattingRule(format2)) {
+        var formattedNumber = formatNationalNumber(state, format2, {
           useNationalPrefixFormattingRule: true,
           getSeparatorAfterNationalPrefix,
           metadata
@@ -3846,15 +3846,15 @@ var require_AsYouTypeFormatter_complete = __commonJS({
           return formattedNumber;
         }
       }
-      return formatNationalNumber(state, format, {
+      return formatNationalNumber(state, format2, {
         useNationalPrefixFormattingRule: false,
         getSeparatorAfterNationalPrefix,
         metadata
       });
     }
-    function formatNationalNumber(state, format, _ref3) {
+    function formatNationalNumber(state, format2, _ref3) {
       var metadata = _ref3.metadata, useNationalPrefixFormattingRule = _ref3.useNationalPrefixFormattingRule, getSeparatorAfterNationalPrefix = _ref3.getSeparatorAfterNationalPrefix;
-      var formattedNationalNumber = (0, _formatNationalNumberUsingFormat["default"])(state.nationalSignificantNumber, format, {
+      var formattedNationalNumber = (0, _formatNationalNumberUsingFormat["default"])(state.nationalSignificantNumber, format2, {
         carrierCode: state.carrierCode,
         useInternationalFormat: state.international,
         withNationalPrefix: useNationalPrefixFormattingRule,
@@ -3862,7 +3862,7 @@ var require_AsYouTypeFormatter_complete = __commonJS({
       });
       if (!useNationalPrefixFormattingRule) {
         if (state.nationalPrefix) {
-          formattedNationalNumber = state.nationalPrefix + getSeparatorAfterNationalPrefix(format) + formattedNationalNumber;
+          formattedNationalNumber = state.nationalPrefix + getSeparatorAfterNationalPrefix(format2) + formattedNationalNumber;
         } else if (state.complexPrefixBeforeNationalSignificantNumber) {
           formattedNationalNumber = state.complexPrefixBeforeNationalSignificantNumber + " " + formattedNationalNumber;
         }
@@ -4338,19 +4338,19 @@ var require_AsYouTypeFormatter = __commonJS({
         var _this = this;
         var state = _ref.state, metadata = _ref.metadata;
         _classCallCheck(this, AsYouTypeFormatter2);
-        _defineProperty(this, "getSeparatorAfterNationalPrefix", function(format) {
+        _defineProperty(this, "getSeparatorAfterNationalPrefix", function(format2) {
           if (_this.isNANP) {
             return " ";
           }
-          if (format && format.nationalPrefixFormattingRule() && NATIONAL_PREFIX_SEPARATORS_PATTERN.test(format.nationalPrefixFormattingRule())) {
+          if (format2 && format2.nationalPrefixFormattingRule() && NATIONAL_PREFIX_SEPARATORS_PATTERN.test(format2.nationalPrefixFormattingRule())) {
             return " ";
           }
           return "";
         });
-        _defineProperty(this, "shouldTryNationalPrefixFormattingRule", function(format, _ref2) {
+        _defineProperty(this, "shouldTryNationalPrefixFormattingRule", function(format2, _ref2) {
           var international = _ref2.international, nationalPrefix = _ref2.nationalPrefix;
-          if (format.nationalPrefixFormattingRule()) {
-            var usesNationalPrefix = format.usesNationalPrefix();
+          if (format2.nationalPrefixFormattingRule()) {
+            var usesNationalPrefix = format2.usesNationalPrefix();
             if (usesNationalPrefix && nationalPrefix || !usesNationalPrefix && !international) {
               return true;
             }
@@ -4385,7 +4385,7 @@ var require_AsYouTypeFormatter = __commonJS({
         }
       }, {
         key: "format",
-        value: function format(nextDigits, state) {
+        value: function format2(nextDigits, state) {
           var _this2 = this;
           if ((0, _AsYouTypeFormatter2.canFormatCompleteNumber)(state.nationalSignificantNumber, this.metadata)) {
             for (var _iterator = this.matchingFormats, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ; ) {
@@ -4400,11 +4400,11 @@ var require_AsYouTypeFormatter = __commonJS({
                   break;
                 _ref3 = _i.value;
               }
-              var format2 = _ref3;
-              var formattedCompleteNumber = (0, _AsYouTypeFormatter2["default"])(state, format2, {
+              var format3 = _ref3;
+              var formattedCompleteNumber = (0, _AsYouTypeFormatter2["default"])(state, format3, {
                 metadata: this.metadata,
-                shouldTryNationalPrefixFormattingRule: function shouldTryNationalPrefixFormattingRule(format3) {
-                  return _this2.shouldTryNationalPrefixFormattingRule(format3, {
+                shouldTryNationalPrefixFormattingRule: function shouldTryNationalPrefixFormattingRule(format4) {
+                  return _this2.shouldTryNationalPrefixFormattingRule(format4, {
                     international: state.international,
                     nationalPrefix: state.nationalPrefix
                   });
@@ -4413,7 +4413,7 @@ var require_AsYouTypeFormatter = __commonJS({
               });
               if (formattedCompleteNumber) {
                 this.resetFormat();
-                this.chosenFormat = format2;
+                this.chosenFormat = format3;
                 this.setNationalNumberTemplate(formattedCompleteNumber.replace(/\d/g, _AsYouTypeFormatter.DIGIT_PLACEHOLDER), state);
                 this.populatedNationalNumberTemplate = formattedCompleteNumber;
                 this.populatedNationalNumberTemplatePosition = this.template.lastIndexOf(_AsYouTypeFormatter.DIGIT_PLACEHOLDER);
@@ -4446,8 +4446,8 @@ var require_AsYouTypeFormatter = __commonJS({
           if (leadingDigitsPatternIndex < 0) {
             leadingDigitsPatternIndex = 0;
           }
-          this.matchingFormats = this.matchingFormats.filter(function(format) {
-            return _this3.formatSuits(format, international, nationalPrefix) && _this3.formatMatches(format, leadingDigits, leadingDigitsPatternIndex);
+          this.matchingFormats = this.matchingFormats.filter(function(format2) {
+            return _this3.formatSuits(format2, international, nationalPrefix) && _this3.formatMatches(format2, leadingDigits, leadingDigitsPatternIndex);
           });
           if (this.chosenFormat && this.matchingFormats.indexOf(this.chosenFormat) === -1) {
             this.resetFormat();
@@ -4455,24 +4455,24 @@ var require_AsYouTypeFormatter = __commonJS({
         }
       }, {
         key: "formatSuits",
-        value: function formatSuits(format, international, nationalPrefix) {
-          if (nationalPrefix && !format.usesNationalPrefix() && !format.nationalPrefixIsOptionalWhenFormattingInNationalFormat()) {
+        value: function formatSuits(format2, international, nationalPrefix) {
+          if (nationalPrefix && !format2.usesNationalPrefix() && !format2.nationalPrefixIsOptionalWhenFormattingInNationalFormat()) {
             return false;
           }
-          if (!international && !nationalPrefix && format.nationalPrefixIsMandatoryWhenFormattingInNationalFormat()) {
+          if (!international && !nationalPrefix && format2.nationalPrefixIsMandatoryWhenFormattingInNationalFormat()) {
             return false;
           }
           return true;
         }
       }, {
         key: "formatMatches",
-        value: function formatMatches(format, leadingDigits, leadingDigitsPatternIndex) {
-          var leadingDigitsPatternsCount = format.leadingDigitsPatterns().length;
+        value: function formatMatches(format2, leadingDigits, leadingDigitsPatternIndex) {
+          var leadingDigitsPatternsCount = format2.leadingDigitsPatterns().length;
           if (leadingDigitsPatternsCount === 0) {
             return true;
           }
           leadingDigitsPatternIndex = Math.min(leadingDigitsPatternIndex, leadingDigitsPatternsCount - 1);
-          var leadingDigitsPattern = format.leadingDigitsPatterns()[leadingDigitsPatternIndex];
+          var leadingDigitsPattern = format2.leadingDigitsPatterns()[leadingDigitsPatternIndex];
           if (leadingDigits.length < MIN_LEADING_DIGITS_LENGTH) {
             try {
               return new _AsYouTypeFormatter3["default"](leadingDigitsPattern).match(leadingDigits, {
@@ -4487,8 +4487,8 @@ var require_AsYouTypeFormatter = __commonJS({
         }
       }, {
         key: "getFormatFormat",
-        value: function getFormatFormat(format, international) {
-          return international ? format.internationalFormat() : format.format();
+        value: function getFormatFormat(format2, international) {
+          return international ? format2.internationalFormat() : format2.format();
         }
       }, {
         key: "chooseFormat",
@@ -4505,20 +4505,20 @@ var require_AsYouTypeFormatter = __commonJS({
                 return "break";
               _ref5 = _i2.value;
             }
-            var format = _ref5;
-            if (_this4.chosenFormat === format) {
+            var format2 = _ref5;
+            if (_this4.chosenFormat === format2) {
               return "break";
             }
-            if (!NON_ALTERING_FORMAT_REG_EXP.test(_this4.getFormatFormat(format, state.international))) {
+            if (!NON_ALTERING_FORMAT_REG_EXP.test(_this4.getFormatFormat(format2, state.international))) {
               return "continue";
             }
-            if (!_this4.createTemplateForFormat(format, state)) {
+            if (!_this4.createTemplateForFormat(format2, state)) {
               _this4.matchingFormats = _this4.matchingFormats.filter(function(_) {
-                return _ !== format;
+                return _ !== format2;
               });
               return "continue";
             }
-            _this4.chosenFormat = format;
+            _this4.chosenFormat = format2;
             return "break";
           };
           _loop:
@@ -4539,11 +4539,11 @@ var require_AsYouTypeFormatter = __commonJS({
         }
       }, {
         key: "createTemplateForFormat",
-        value: function createTemplateForFormat(format, state) {
-          if (SUPPORT_LEGACY_FORMATTING_PATTERNS && format.pattern().indexOf("|") >= 0) {
+        value: function createTemplateForFormat(format2, state) {
+          if (SUPPORT_LEGACY_FORMATTING_PATTERNS && format2.pattern().indexOf("|") >= 0) {
             return;
           }
-          var template = this.getTemplateForFormat(format, state);
+          var template = this.getTemplateForFormat(format2, state);
           if (template) {
             this.setNationalNumberTemplate(template, state);
             return true;
@@ -4592,9 +4592,9 @@ var require_AsYouTypeFormatter = __commonJS({
         }
       }, {
         key: "getTemplateForFormat",
-        value: function getTemplateForFormat(format, _ref7) {
+        value: function getTemplateForFormat(format2, _ref7) {
           var nationalSignificantNumber = _ref7.nationalSignificantNumber, international = _ref7.international, nationalPrefix = _ref7.nationalPrefix, complexPrefixBeforeNationalSignificantNumber = _ref7.complexPrefixBeforeNationalSignificantNumber;
-          var pattern = format.pattern();
+          var pattern = format2.pattern();
           if (SUPPORT_LEGACY_FORMATTING_PATTERNS) {
             pattern = pattern.replace(CREATE_CHARACTER_CLASS_PATTERN(), "\\d").replace(CREATE_STANDALONE_DIGIT_PATTERN(), "\\d");
           }
@@ -4607,14 +4607,14 @@ var require_AsYouTypeFormatter = __commonJS({
           if (strictPattern.test(nationalNumberDummyDigits)) {
             digits = nationalNumberDummyDigits;
           }
-          var numberFormat = this.getFormatFormat(format, international);
+          var numberFormat = this.getFormatFormat(format2, international);
           var nationalPrefixIncludedInTemplate;
-          if (this.shouldTryNationalPrefixFormattingRule(format, {
+          if (this.shouldTryNationalPrefixFormattingRule(format2, {
             international,
             nationalPrefix
           })) {
-            var numberFormatWithNationalPrefix = numberFormat.replace(_formatNationalNumberUsingFormat.FIRST_GROUP_PATTERN, format.nationalPrefixFormattingRule());
-            if ((0, _parseDigits["default"])(format.nationalPrefixFormattingRule()) === (nationalPrefix || "") + (0, _parseDigits["default"])("$1")) {
+            var numberFormatWithNationalPrefix = numberFormat.replace(_formatNationalNumberUsingFormat.FIRST_GROUP_PATTERN, format2.nationalPrefixFormattingRule());
+            if ((0, _parseDigits["default"])(format2.nationalPrefixFormattingRule()) === (nationalPrefix || "") + (0, _parseDigits["default"])("$1")) {
               numberFormat = numberFormatWithNationalPrefix;
               nationalPrefixIncludedInTemplate = true;
               if (nationalPrefix) {
@@ -4631,7 +4631,7 @@ var require_AsYouTypeFormatter = __commonJS({
             if (complexPrefixBeforeNationalSignificantNumber) {
               template = (0, _AsYouTypeFormatter.repeat)(_AsYouTypeFormatter.DIGIT_PLACEHOLDER, complexPrefixBeforeNationalSignificantNumber.length) + " " + template;
             } else if (nationalPrefix) {
-              template = (0, _AsYouTypeFormatter.repeat)(_AsYouTypeFormatter.DIGIT_PLACEHOLDER, nationalPrefix.length) + this.getSeparatorAfterNationalPrefix(format) + template;
+              template = (0, _AsYouTypeFormatter.repeat)(_AsYouTypeFormatter.DIGIT_PLACEHOLDER, nationalPrefix.length) + this.getSeparatorAfterNationalPrefix(format2) + template;
             }
           }
           if (international) {
@@ -5534,13 +5534,15 @@ var require_index_commonjs2 = __commonJS({
 // priv/index.js
 var import_readline = require("readline");
 var import_max = __toESM(require_index_commonjs2());
-var int = (0, import_readline.createInterface)({ input: process.stdin, terminal: false });
-int.on("line", (line) => {
+var rl = (0, import_readline.createInterface)({ input: process.stdin, terminal: false });
+rl.on("line", (line) => {
   const [command, ...args] = JSON.parse(line);
   switch (command) {
     case "parse":
-      const response = parse(...args);
-      process.stdout.write(response);
+      process.stdout.write(parse(...args));
+      break;
+    case "format":
+      process.stdout.write(format(...args));
       break;
     default:
       process.stdout.write(error_response());
@@ -5552,7 +5554,7 @@ function parse(number = "", defaultCountry = "") {
     if (error) {
       return error_response(error);
     }
-    const parsed = (0, import_max.parsePhoneNumber)(number, { defaultCountry });
+    const parsed = (0, import_max.parsePhoneNumber)(number, defaultCountry);
     return ok_response({
       countryCallingCode: parsed.countryCallingCode,
       nationalNumber: parsed.nationalNumber,
@@ -5561,6 +5563,19 @@ function parse(number = "", defaultCountry = "") {
       isValid: parsed.isValid(),
       type: parsed.getType()
     });
+  } catch (error) {
+    return error_response();
+  }
+}
+function format(number = "", format2 = "") {
+  try {
+    const error = (0, import_max.validatePhoneNumberLength)(number);
+    if (error) {
+      return error_response(error);
+    }
+    const parsed = (0, import_max.parsePhoneNumber)(number);
+    const formatted = parsed.format(format2);
+    return ok_response(formatted);
   } catch (error) {
     return error_response();
   }

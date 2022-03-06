@@ -1,15 +1,22 @@
 import { createInterface } from "readline"
-import { validatePhoneNumberLength, parsePhoneNumber } from 'libphonenumber-js/max'
+import {
+  parsePhoneNumber,
+  PhoneNumber,
+  validatePhoneNumberLength,
+} from 'libphonenumber-js/max'
 
-const int = createInterface({ input: process.stdin, terminal: false })
+const rl = createInterface({ input: process.stdin, terminal: false })
 
-int.on("line", line => {
+rl.on("line", line => {
   const [command, ...args] = JSON.parse(line)
 
   switch (command) {
     case "parse":
-      const response = parse(...args)
-      process.stdout.write(response)
+      process.stdout.write(parse(...args))
+      break
+
+    case "format":
+      process.stdout.write(format(...args))
       break
 
     default:
@@ -24,7 +31,7 @@ function parse(number = "", defaultCountry = "") {
       return error_response(error)
     }
 
-    const parsed = parsePhoneNumber(number, {defaultCountry})
+    const parsed = parsePhoneNumber(number, defaultCountry)
     return ok_response({
       countryCallingCode: parsed.countryCallingCode,
       nationalNumber: parsed.nationalNumber,
@@ -35,6 +42,21 @@ function parse(number = "", defaultCountry = "") {
     })
   } catch (error) {
     // log(`[libphonenumber-js] ${error}`)
+    return error_response()
+  }
+}
+
+function format(number = "", format = "") {
+  try {
+    const error = validatePhoneNumberLength(number)
+    if (error) {
+      return error_response(error)
+    }
+
+    const parsed = parsePhoneNumber(number)
+    const formatted = parsed.format(format)
+    return ok_response(formatted)
+  } catch (error) {
     return error_response()
   }
 }
