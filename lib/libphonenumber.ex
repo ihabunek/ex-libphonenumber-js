@@ -56,16 +56,10 @@ defmodule Libphonenumber do
 
   @impl GenServer
   def init(_) do
-    path = bundle_path()
-
-    port = Port.open({:spawn, "node #{path}"}, [:binary])
+    node = System.find_executable("node") || raise "Node not found."
+    bundle_path = Application.app_dir(:libphonenumber_js, "priv/bundle.cjs")
+    port = Port.open({:spawn_executable, node}, [:binary, args: [bundle_path]])
     {:ok, port}
-  end
-
-  defp bundle_path() do
-    path = __DIR__ |> Path.join("../assets/bundle.cjs") |> Path.expand()
-    File.exists?(path) || raise "Bundle not found, run `make bundle` to generate it."
-    path
   end
 
   @impl GenServer

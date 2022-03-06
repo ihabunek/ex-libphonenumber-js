@@ -1,8 +1,5 @@
 bundle:
-	esbuild --bundle --platform=node --outfile=assets/bundle.cjs assets/index.js
+	esbuild --bundle --platform=node --outfile=priv/bundle.cjs priv/index.js
 
 watch-bundle:
-	esbuild --bundle --platform=node --outfile=assets/bundle.cjs --watch assets/index.js
-
-clean:
-	rm assets/bundle.cjs
+	esbuild --bundle --platform=node --outfile=priv/bundle.cjs --watch priv/index.js

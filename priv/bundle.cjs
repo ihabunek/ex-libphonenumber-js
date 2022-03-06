@@ -5531,7 +5531,7 @@ var require_index_commonjs2 = __commonJS({
   }
 });
 
-// assets/index.js
+// priv/index.js
 var import_readline = require("readline");
 var import_max = __toESM(require_index_commonjs2());
 var int = (0, import_readline.createInterface)({ input: process.stdin, terminal: false });
