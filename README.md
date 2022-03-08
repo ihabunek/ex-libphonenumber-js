@@ -15,18 +15,11 @@ Requires Node.
 
 **Status**: Under development. Anything can change.
 
-## Installation
+## Overview
 
-The package can be installed by adding `libphonenumber_js` to your list of
-dependencies in mix.exs:
-
-```elixir
-def deps do
-  [
-    {:libphonenumber_js, "~> 0.1.0"}
-  ]
-end
-```
+* [Source code](https://github.com/ihabunek/ex_libphonenumber_js/)
+* [Documentation](https://hexdocs.pm/parent/libphonenumber_js)
+* License: Apache License Version 2.0
 
 ## Quick start
 
