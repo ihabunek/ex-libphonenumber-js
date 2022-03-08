@@ -1569,9 +1569,9 @@ var require_PhoneNumber = __commonJS({
       return Constructor;
     }
     var USE_NON_GEOGRAPHIC_COUNTRY_CODE = false;
-    var PhoneNumber2 = /* @__PURE__ */ function() {
-      function PhoneNumber3(countryCallingCode, nationalNumber, metadata) {
-        _classCallCheck(this, PhoneNumber3);
+    var PhoneNumber = /* @__PURE__ */ function() {
+      function PhoneNumber2(countryCallingCode, nationalNumber, metadata) {
+        _classCallCheck(this, PhoneNumber2);
         if (!countryCallingCode) {
           throw new TypeError("`country` or `countryCallingCode` not passed");
         }
@@ -1598,7 +1598,7 @@ var require_PhoneNumber = __commonJS({
         this.number = "+" + this.countryCallingCode + this.nationalNumber;
         this.metadata = metadata;
       }
-      _createClass(PhoneNumber3, [{
+      _createClass(PhoneNumber2, [{
         key: "setExt",
         value: function setExt(ext) {
           this.ext = ext;
@@ -1660,9 +1660,9 @@ var require_PhoneNumber = __commonJS({
           return this.format("RFC3966", options);
         }
       }]);
-      return PhoneNumber3;
+      return PhoneNumber2;
     }();
-    exports["default"] = PhoneNumber2;
+    exports["default"] = PhoneNumber;
     var isCountryCode = function isCountryCode2(value) {
       return /^[A-Z]{2}$/.test(value);
     };

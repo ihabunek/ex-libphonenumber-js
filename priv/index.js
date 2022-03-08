@@ -1,9 +1,5 @@
 import { createInterface } from "readline"
-import {
-  parsePhoneNumber,
-  PhoneNumber,
-  validatePhoneNumberLength,
-} from 'libphonenumber-js/max'
+import { parsePhoneNumber, validatePhoneNumberLength } from 'libphonenumber-js/max'
 
 const rl = createInterface({ input: process.stdin, terminal: false })
 
