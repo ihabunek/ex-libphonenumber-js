@@ -1,33 +1,47 @@
-# Libphonenumber
+# LibphonenumberJS
 
-An Elixir wrapper around [libphonenumber-js](https://gitlab.com/catamphetamine/libphonenumber-js). Runs a small Node server which exposes libphonenumber-js functionality to Elixir. Requires Node.
+Provides parsing and formatting phonenumbers.
 
-**STATUS**: In development. Anything can change, no releases, no docs.
+An Elixir wrapper around
+[libphonenumber-js](https://gitlab.com/catamphetamine/libphonenumber-js). Runs a
+small Node server which exposes a subset of libphonenumber-js functionality to
+Elixir.
 
-## Installation (TODO)
+Requires Node.
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `libphonenumber` to your list of dependencies in `mix.exs`:
+**Motivation**: Makes it possible to use the same library for phone number
+  manipulation in server and client code, reducing the possiblity of different
+  behaviours between the two.
+
+**Status**: Under development. Anything can change.
+
+## Installation
+
+The package can be installed by adding `libphonenumber_js` to your list of
+dependencies in mix.exs:
 
 ```elixir
 def deps do
   [
-    {:libphonenumber, "~> 0.1.0"}
+    {:libphonenumber_js, "~> 0.1.0"}
   ]
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/libphonenumber>.
+## Quick start
 
-## Usage
+Start the server before using.
 
 ```elixir
 iex> Libphonenumber.start_link(nil)
 {:ok, #PID<0.240.0>}
+```
 
-# Parsing national numbers
+### Parsing
+
+National formatted numbers, requires a country code as second argument.
+
+```elixir
 iex> Libphonenumber.parse("(814) 300-8073", "US")
 {:ok,
  %Libphonenumber.Parsed{
@@ -38,9 +52,11 @@ iex> Libphonenumber.parse("(814) 300-8073", "US")
    type: :fixed_line_or_mobile,
    valid?: true
  }}
+```
 
+E164 formatted international numbers, does not require country code.
 
-# Parsing E164 formatted international numbers
+```elixir
 iex> Libphonenumber.parse("+385991234567")
 {:ok,
  %Libphonenumber.Parsed{
@@ -51,29 +67,57 @@ iex> Libphonenumber.parse("+385991234567")
    type: :mobile,
    valid?: true
  }}
+```
 
-# Returns invalid numbers (e.g. US area code 555 does not exist)
-iex> Libphonenumber.parse("(555) 1234-567", "US")
-atom: nil
-{:ok,
- %Libphonenumber.Parsed{
-   country: "US",
-   country_calling_code: "1",
-   national_number: "5551234567",
-   number: "+15551234567",
-   type: :unknown,
-   valid?: false
- }}
+Returns an error if number cannot be parsed.
 
-# Returns errors
-iex> Libphonenumber.parse("123", "HR")
+```elixir
+iex> Libphonenumber.parse("0991", "HR")
 {:error, :too_short}
 
-iex> Libphonenumber.parse("banana")
+iex> Libphonenumber.parse("099123456789", "HR")
+{:error, :too_long}
+
+iex> Libphonenumber.parse("banana", "HR")
 {:error, :not_a_number}
+
+iex(3)> Libphonenumber.parse("123", "mango")
+{:error, :invalid_country}
+```
+
+### Formatting numbers
+
+`format` takes an E.164 formatted phone number and formats it to one of the
+supported format templates.
+
+```elixir
+iex> Libphonenumber.format("+18143008073")
+{:ok, "(814) 300-8073"}
+
+iex> Libphonenumber.format("+18143008073", :national)
+{:ok, "(814) 300-8073"}
+
+iex> Libphonenumber.format("+18143008073", :international)
+{:ok, "+1 814 300 8073"}
+
+iex> Libphonenumber.format("+18143008073", :e164)
+{:ok, "+18143008073"}
+
+iex> Libphonenumber.format("+18143008073", :rfc3966)
+{:ok, "tel:+18143008073"}
+```
+
+Returns the same errors as `parse` with the addition of `:invalid_format`.
+
+```elixir
+iex> Libphonenumber.format("+18143008073", :kiwi)
+{:error, :invalid_format}
 ```
 
 ## Upgrading to a newer version of libphonenumber-js
+
+Not required for normal usage, this is the procedure for creating a new release
+of LibphonenumberJS from a new version of the underlying javascript library.
 
 Requires [esbuild](https://esbuild.github.io/).
 
