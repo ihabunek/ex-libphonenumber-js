@@ -1,4 +1,4 @@
-defmodule LibphonenumberJS.MixProject do
+defmodule LibPhoneNumber.MixProject do
   use Mix.Project
 
   @version "0.1.0"

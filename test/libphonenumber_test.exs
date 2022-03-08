@@ -1,16 +1,19 @@
-defmodule ClusterTest do
+defmodule LibPhoneNumberTest do
   use ExUnit.Case
+  doctest LibPhoneNumber
 
-  import Libphonenumber, only: [parse: 1, parse: 2, format: 1, format: 2]
+  alias LibPhoneNumber.Parsed
+
+  import LibPhoneNumber, only: [parse: 1, parse: 2, format: 1, format: 2]
 
   describe "parse" do
     test "parsing national numbers" do
-      assert {:ok, _pid} = Libphonenumber.start_link(nil)
+      assert {:ok, _pid} = LibPhoneNumber.start_link(nil)
 
       # Valid number
       assert {:ok, parsed} = parse("(484) 4608-058", "US")
 
-      assert parsed == %Libphonenumber.Parsed{
+      assert parsed == %Parsed{
                country: "US",
                country_calling_code: "1",
                national_number: "4844608058",
@@ -22,7 +25,7 @@ defmodule ClusterTest do
       # Invalid number
       assert {:ok, parsed} = parse("(555) 1234-567", "US")
 
-      assert parsed == %Libphonenumber.Parsed{
+      assert parsed == %Parsed{
                country: "US",
                country_calling_code: "1",
                national_number: "5551234567",
@@ -49,10 +52,10 @@ defmodule ClusterTest do
     end
 
     test "parsing international numbers" do
-      assert {:ok, _pid} = Libphonenumber.start_link(nil)
+      assert {:ok, _pid} = LibPhoneNumber.start_link(nil)
       assert {:ok, parsed} = parse("+385991234567")
 
-      assert parsed == %Libphonenumber.Parsed{
+      assert parsed == %Parsed{
                country: "HR",
                country_calling_code: "385",
                national_number: "991234567",
@@ -64,7 +67,7 @@ defmodule ClusterTest do
       # Given country code is ignored
       assert {:ok, parsed} = parse("+385991234567", "US")
 
-      assert parsed == %Libphonenumber.Parsed{
+      assert parsed == %Parsed{
                country: "HR",
                country_calling_code: "385",
                national_number: "991234567",
@@ -82,7 +85,7 @@ defmodule ClusterTest do
 
   describe "format" do
     test "various formats" do
-      assert {:ok, _pid} = Libphonenumber.start_link(nil)
+      assert {:ok, _pid} = LibPhoneNumber.start_link(nil)
 
       assert format("+385991234567") == {:ok, "099 123 4567"}
       assert format("+385991234567", :national) == {:ok, "099 123 4567"}

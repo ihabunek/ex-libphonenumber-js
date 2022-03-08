@@ -1,4 +1,4 @@
-defmodule Libphonenumber do
+defmodule LibPhoneNumber do
   use GenServer
   require Logger
 
@@ -10,7 +10,7 @@ defmodule Libphonenumber do
           | :too_short
           | :unknown
 
-  @type format_error :: :invalid_format
+  @type format_error :: parse_error() | :invalid_format
 
   @type number_type ::
           :mobile
@@ -42,7 +42,7 @@ defmodule Libphonenumber do
             number: String.t(),
             country: String.t(),
             valid?: boolean(),
-            type: Libphonenumber.number_type()
+            type: LibPhoneNumber.number_type()
           }
 
     defstruct ~w/country_calling_code national_number number country valid? type/a
